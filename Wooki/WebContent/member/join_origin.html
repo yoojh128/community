@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="euc-kr">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densitydpi=medium-dpi">
+<title>Pappus : 회원가입</title>
+<link rel="stylesheet" type="text/css" href="css-rep/join/join.css">
+<link rel="stylesheet" type="text/css" href="css-rep/join/join_pc.css">
+<link href="https://nid.naver.com/favicon_1024.png"
+rel="apple-touch-icon-precomposed" sizes="1024x1024" />
+<script type="text/javascript" src="https://nid.naver.com/js/clickcr.js"></script>
+<script type="text/javascript" src="/inc/user/js/join_kr.js?20150403"></script>
+<script type="text/javascript"
+src="https://nid.naver.com/inc/common/js/rsaAll.js"></script>
+<script type="text/javascript" src="/inc/common/js/lua.js"></script>
+<script type="text/javascript">
+	function checkIt() {
+		if(!document.userinput.id.value){
+			alert("ID를 입력하세요");
+			return false;
+		}
+		if(!document.userinput.pw.value){
+			alert("비밀번호를 입력하세요");
+			return false;
+		}
+		if(document.userinput.pw.value != document.userinput.pswd2.value){
+			alert("비밀번호를 동일하게 입력하세요");
+			return false;
+		}
+		if(!document.userinput.name.value){
+			alert("사용자의 이름을 입력하세요");
+			return false;
+		}
+		var gender = $(':radio[name="gender"]:checked').val();
+		if(gender==null){
+			alert("성별을 선택하세요");
+			alert(gender);
+			return false;
+		}
+		if(!document.userinput.year.value&&!document.userinput.month.value&&!document.userinput.day.value){
+			alert("생년월일을 입력하세요");
+			return false;
+		}
+	
+		if(!document.userinput.phoneNum.value){
+			alert("휴대번호를 입력하세요");
+			return false;
+		}
+	}
+	
+	function openConfirmid(inputid) {
+		if(inputid.id.value==""){
+			alert("아이디를 입력해주세요");
+			return;
+		}
+		url = "confirmId.do?id="+encodeURI(encodeURIComponent(inputid.id.value));
+		window.open(url, "confirm", "toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=310,height=180");
+// 		open(url, "confirm", "toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=310,height=180");
+	}
+	
+</script>
+<meta name="decorator" content="PC_JOIN_UNREAL">
+</head>
+
+<!-- PC-ko_KR -->
+<body class="" style="background: url(css-rep/index/img/bg.jpg) no-repeat center center scroll;">
+<br>
+<br>
+<br>
+<div id="wrap">
+
+<!-- container -->
+<div id="container">
+
+<!-- content -->
+<div id="content">
+<h2 class="blind">Pappus 회원가입</h2>
+<div class="join_content">
+<div class="join_form">
+<form id="join_form" method="post" action="complete.do" name="userinput" onSubmit="return checkIt()">
+<fieldset class="join_from">
+<legend class="blind">회원가입</legend>
+<div class="row_group">
+<div id="idDiv" class="join_row">
+<span class="ps_box int_id"> <input type="text" id="id"
+name="id" value="" maxlength="20" placeholder="아이디"
+class="int">
+</span>
+<span class="px_box int_id"><input type="button" name="comfirm_id"
+ value="중복확인" onclick="openConfirmid(this.form)"></span>
+</div>
+<div id="pswd1Div" class="join_row">
+<!-- [D]normal상태 int_pass / 1단계 사용불가 int_pass_step1 / 2단계 낮음 int_pass_step2 / 3단계 적정 int_pass_step3 / 4단계 높음 int_pass_step4 -->
+<span id="pswd1Img" class="ps_box int_pass"> <input
+type="password" id="pswd1" name="pw" maxlength="16"
+placeholder="비밀번호" class="int">
+</span>
+</div>
+<div id="pswd2Div" class="join_row">
+<!-- [D]normal상태 int_pass_check / 비밀번호 확인완료 int_pass_check2  -->
+<span id="pswd2Img" class="ps_box int_pass_check"> <input
+type="password" id="pswd2" name="pswd2" maxlength="16"
+placeholder="비밀번호 재확인" class="int">
+</span>
+</div>
+</div>
+
+<div class="row_group">
+<div id="nmDiv" class="join_row">
+<span class="ps_box"> <input type="text" id="nm"
+name="name" maxlength="40" value="" placeholder="이름"
+class="int">
+</span>
+</div>
+<div id="sexDiv" class="join_row join_sex">
+<span class="row_title blind"> 성별 </span> <span class="sex">
+<span class="jender"><input type="radio" id="man"
+name="gender" value="m" onClick="checkSex()" /><label
+id="manLb" for="man">남자 </label> </span><span class="jender"><input
+type="radio" id="woman" name="gender" value="f"
+onClick="checkSex()" /><label id="womanLb" for="woman">여자
+</label></span>
+</span>
+</div>
+
+<div id="birthdayDiv" class="join_row join_birthday">
+<div class="join_birth">
+<div class="bir_title">
+<span>생일</span>
+</div>
+<div class="bir_yy">
+<span class="ps_box"> <input type="text" name="year" id="yy"
+maxlength="4" value="" placeholder="년(4자)" class="int">
+<label id="yyLb" for="yy" class="lbl">년(4자)</label>
+</span>
+</div>
+<span class="cell">|</span>
+<div class="bir_mm">
+<span class="ps_box"> <select name="month" id="mm" title="월"
+class="sel" onChange="checkBirthday('check')">
+<option value="">월</option>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+<option value="9">9</option>
+<option value="10">10</option>
+<option value="11">11</option>
+<option value="12">12</option>
+</select>
+</span>
+</div>
+<span class="cell">|</span>
+<div class=" bir_dd">
+<span class="ps_box"> <input type="text" name="day" id="dd"
+maxlength="2" value="" placeholder="일" class="int">
+<label id="ddLb" for="dd" class="lbl">일</label>
+</span>
+</div>
+</div>
+</div>
+<div id="emailDiv" class="join_row join_email">
+<span class="ps_box int_email"> <input type="text"
+id="email" name="email" maxlength="100" value=""
+placeholder="비상연락용 이메일" class="int"> <label
+id="emailLb" for="email" class="lbl">비상연락용 이메일</label>
+</span>
+</div>
+</div>
+
+<!-- 일반 모바일 인증 -->
+<div id="mobDiv" class="row_group" style="display: block">
+<div id="mobnoDiv" class="join_row join_mobile">
+<span class="ps_box int_mobile"> <input type="text"
+id="mobno" name="phoneNum" maxlength="16" value=""
+onFocus="toggleLabel('mobnoLb','mobno','in');"
+onBlur="toggleLabel('mobnoLb','mobno','out');checkMobno('check')"
+placeholder="휴대전화번호" class="int"> <label id="mobnoLb"
+for="mobno" class="lbl">휴대전화번호</label>
+<button type="button" disabled="" title="delete" class="wrg">삭제</button>
+</span>
+<div id="mobnoMsg" class="error" style="display: none">필수
+정보입니다.</div>
+<a href="#"
+onClick="javascript:sendSmsButton();clickcr(this, 'phn.code', '', '', event);return false;"
+class="btn_c btn_mobile_submit">인증</a>
+</div>
+
+<div id="authnoDiv" class="join_row join_mobile_certify">
+<span class="ps_box int_mobile_certify"> <input
+type="text" id="authno" name="authno" maxlength="6" value=""
+onFocus="toggleLabel('authnoLb','authno','in');"
+onBlur="toggleLabel('authnoLb','authno','out');checkAuthno('check')"
+placeholder="인증번호" class="int"> <label id="authnoLb"
+for="authno" class="lbl">인증번호</label>
+<button type="button" disabled="" title="delete" class="wrg">삭제</button>
+</span>
+<div id="authnoMsg" class="error" style="display: none">필수
+정보입니다.</div>
+<a href="#"
+onClick="javascript:checkAuthnoButton();clickcr(this, 'phn.codeconfirm', '', '', event);return false;"
+class="btn_c btn_certify_submit">확인</a>
+</div>
+</div>
+<!-- 일반 모바일 인증 -->
+
+<!-- 보호자 모바일 인증 -->
+<div id="jmobDiv" class="join_minor tab" style="display: none">
+<ul class="tab_m">
+<li class="m1"><a href="#" class="on">휴대전화인증</a></li>
+<li class="m2"><a href="#"
+onClick="viewJuniverIpinTab();clickcr(this, 'ver.ipin', '', '', event);return false;">아이핀
+인증</a></li>
+</ul>
+<div class="mobile_box">
+<p class="parent_privacy_txt">
+보호자 이름, 휴대전화정보, DI(중복가입확인정보)는 보호자 동의 확인을 위하여 <br>아동의 정보와
+함께 저장됩니다.
+</p>
+<p class="parent_privacy">
+<span class="parent_privacy_title">개인정보 처리에 동의합니다.</span> <span
+class="input_chk"> <input type="checkbox" id="pterms"
+onClick="viewPrtsAgree();clickcr(this, 'jrp.privacy', '', '', event);"
+class="chk"> <label id="ptermsLb" for="pterms"><span>동의</span></label>
+</span> <span id="ptermsMsg" class="error" style="display: none">개인정보
+처리에 동의해주세요.</span>
+</p>
+<div class="row_group">
+<div class="join_row">
+<span class="ps_box"> <input type="text" id="pnm"
+name="pnm" value=""
+onFocus="toggleLabel('pnmLb','pnm','in');"
+onBlur="toggleLabel('pnmLb','pnm','out');checkPrtsName('check')"
+placeholder="보호자 이름" class="int"> <label id="pnmLb"
+for="pnm" class="lbl">보호자이름</label>
+<button type="button" disabled="" title="delete"
+class="wrg">삭제</button>
+</span> <span id="pnmMsg" class="error" style="display: none">필수
+정보입니다.</span>
+</div>
+<div class="join_row sex_local">
+<div class="join_local">
+<span class="ps_box"> <select id="pForeign"
+name="pForeign" title="국적" class="sel">
+    <option value="N">내국인</option>
+    <option value="Y">외국인</option>
+</select>
+</span>
+</div>
+<span class="cell">|</span>
+<div id="psexDiv" class="join_sex">
+<span class="row_title blind">성별</span> <span class="sex">
+<span class="jender"> <input type="radio" id="pman"
+    name="psex" value="M" onClick="checkPrtsSex()" /> <label
+    id="pmanLb" for="pman">남자</label></span><span class="jender">
+    <input type="radio" id="pwoman" name="psex" value="F"
+    onClick="checkPrtsSex()" /> <label id="pwomanLb"
+    for="pwoman">여자</label>
+</span>
+</span>
+</div>
+<span id="psexMsg" class="error" style="display: none">필수
+정보입니다.</span>
+</div>
+
+<div class="join_row join_birthday">
+<div class="join_birth">
+<div class="bir_title">
+<span>생일</span>
+</div>
+<div class="bir_yy">
+<span class="ps_box"> <input type="text"
+    maxlength="4" id="pyy" name="pyy" value=""
+    onFocus="toggleLabel('pyyLb','pyy','in');"
+    onBlur="toggleLabel('pyyLb','pyy','out');checkPrtsBirthday('check')"
+    placeholder="년(4자)" class="int"> <label
+    id="pyyLb" for="pyy" class="lbl">년(4자)</label>
+    <button type="button" disabled="" title="delete"
+        class="wrg">삭제</button>
+</span>
+</div>
+<span class="cell">|</span>
+<div class="bir_mm">
+<span class="ps_box"> <select id="pmm" name="pmm"
+    title="월" class="sel"
+    onChange="checkPrtsBirthday('check')">
+        <option value="">월</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+        <option value="11">11</option>
+        <option value="12">12</option>
+</select>
+</span>
+</div>
+<span class="cell">|</span>
+<div class="bir_dd">
+<span class="ps_box"> <input type="text"
+    maxlength="2" id="pdd" name="pdd" value=""
+    placeholder="일" class="int"> <label id="pddLb"
+    for="pdd" class="lbl">일</label>
+</span>
+</div>
+</div>
+</div>
+<div class="join_row join_mobile">
+</span> <span class="ps_box int_mobile"> <input type="text"
+maxlength="16" id="pmobno" name="pmobno" value=""
+placeholder="휴대전화번호" class="int"> <label
+id="pmobnoLb" for="pmobno" class="lbl">휴대전화번호</label>
+</span> <a href="#" onClick="">인증</a>
+</div>
+<div class="join_row join_mobile_certify">
+<span class="ps_box int_mobile_certify"> <input
+type="text" maxlength="6" id="pauthno" name="pauthno"
+value="" placeholder="인증번호" class="int">
+<button type="button" disabled="" title="delete"
+class="wrg">삭제</button>
+</span> <a href="#"
+onClick="checkPrtsAuthnoButton();clickcr(this, 'jrp.codeconfirm', '', '', event);return false;"
+class="btn_c btn_certify_submit">확인</a>
+</div>
+</div>
+</div>
+
+</div>
+</fieldset>
+<div align="center">
+<input type="submit" title="회원가입" alt="회원가입" value="가입하기"
+style="width: 200px; height: 50px">
+</div>
+</div>
+</div>
+</form>
+
+</div>
+<!-- //content -->
+</div>
+<!-- //container -->
+</div>
+</body>
+</html>

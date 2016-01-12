@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.MemoMapper">
+	<select id="selectMemoFavoriteCount" parameterType="String"
+		resultType="Integer">
+		select count(*) from favorite_memo where id=#{id}
+	</select>
+
+	<select id="selectMemoCount" parameterType="map" resultType="Integer">
+		select count(*) from pappus_memo where sido=#{si} and sigugun=#{gu}
+	</select>
+
+	<select id="selectMemoFavoriteList_0" parameterType="map"
+		resultType="Memo">
+		select memo_num, id, content, posting_date from pappus_memo
+		where memo_num in(select memo_num from favorite_memo where id=#{id})
+		order by posting_date desc limit #{startRow},#{countPerPage}
+	</select>
+
+	<select id="selectMemoFavoriteList_1" parameterType="map"
+		resultType="Memo">
+		select p.memo_num, p.id, p.content, p.posting_date,
+		sum(u.up) sumup from pappus_memo p left join updown_memo u on
+		p.memo_num = u.memo_num where p.memo_num in (select memo_num from
+		favorite_memo where id = #{id}) group by memo_num order by sumup desc
+		limit #{startRow},#{countPerPage}
+	</select>
+
+	<select id="selectMemoOtherList_0" parameterType="map"
+		resultType="Memo">
+		select memo_num, id, content, posting_date from pappus_memo
+		where sido=#{si} and sigugun=#{gu} order by posting_date desc limit
+		#{startRow},#{countPerPage}
+	</select>
+
+	<select id="selectMemoOtherList_1" parameterType="map"
+		resultType="Memo">
+		select p.memo_num, p.id, p.content, p.posting_date,
+		sum(u.up) sumup from pappus_memo p left join updown_memo u on
+		p.memo_num = u.memo_num where p.sido=#{si} and p.sigugun=#{gu} group
+		by
+		memo_num order by sumup desc limit #{startRow},#{countPerPage}
+	</select>
+
+	<select id="selectMemoList_0" parameterType="map" resultType="Memo">
+		select memo_num, id, content, posting_date from pappus_memo where
+		sido=#{si} and sigugun=#{gu} order by posting_date desc limit
+		#{startRow},#{countPerPage}
+	</select>
+
+	<select id="selectMemoList_1" parameterType="map" resultType="Memo">
+		select p.memo_num, p.id, p.content, p.posting_date, sum(u.up) sumup
+		from pappus_memo p left join updown_memo u on p.memo_num = u.memo_num
+		where sido=#{si} and sigugun=#{gu} group by memo_num order by sumup
+		desc limit #{startRow},#{countPerPage}
+	</select>
+
+	<select id="selectMemo" parameterType="Integer" resultType="Memo">
+		select memo_num, id, content, posting_date, read_count from
+		pappus_memo where
+		memo_num = #{memo_num}
+	</select>
+
+	<select id="selectUpdown" parameterType="Integer" resultType="Memo">
+		select sum(up) as up, sum(down) as down from updown_memo where
+		memo_num = #{memo_num}
+	</select>
+
+	<resultMap type="Memo" id="rmap">
+		<result column="rp_memo" property="reply" />
+	</resultMap>
+
+	<select id="selectRep" parameterType="Integer" resultMap="rmap">
+		select
+		rp_memo from rep_memo where memo_num = #{memo_num}
+	</select>
+
+	<select id="existReply" parameterType="Integer" resultType="Integer">
+		select count(memo_num) from rep_memo where memo_num = #{memo_num}
+	</select>
+
+	<select id="selectFavorite" parameterType="map" resultType="Integer">
+		select count(*) from favorite_memo where memo_num = #{memo_num} and id
+		= #{id}
+	</select>
+
+	<select id="existUpdown" parameterType="map" resultType="Integer">
+		select
+		count(*) from updown_memo where memo_num = #{memo_num} and id = #{id}
+	</select>
+
+	<select id="isUp" parameterType="map" resultType="Integer">
+		select count(*)
+		from updown_memo where memo_num = #{memo_num} and id = #{id} and up =
+		1
+	</select>
+
+	<select id="isDown" parameterType="map" resultType="Integer">
+		select
+		count(*) from updown_memo where memo_num = #{memo_num} and id = #{id}
+		and down = 1
+	</select>
+
+	<insert id="createReply" parameterType="map">
+		insert into
+		rep_memo(memo_num,rp_memo) values(#{memo_num},#{reply_text})
+	</insert>
+
+	<insert id="addFavorite" parameterType="map">
+		insert into
+		favorite_memo(id,memo_num) values(#{id},#{memo_num})
+	</insert>
+
+	<insert id="addUpdown_Up" parameterType="map">
+		insert into
+		updown_memo(id,memo_num, up) values(#{id},#{memo_num}, 1)
+	</insert>
+
+	<insert id="addUpdown_Down" parameterType="map">
+		insert into
+		updown_memo(id,memo_num, down) values(#{id},#{memo_num}, 1)
+	</insert>
+
+	<insert id="insertMemo" parameterType="Memo">
+		insert into
+		pappus_memo(id,content,sido,sigugun,posvalue,posting_date)
+		values(#{id},#{content},#{sido},#{sigugun},#{posvalue},now())
+	</insert>
+
+	<update id="updateReadCount" parameterType="Integer">
+		update pappus_memo
+		set read_count=read_count+1 where memo_num=#{memo_num}
+	</update>
+
+	<update id="addReply" parameterType="map">
+		update rep_memo set rp_memo
+		= concat(rp_memo,#{reply_text}) where memo_num = #{memo_num}
+	</update>
+
+	<update id="plusUp" parameterType="map">
+		update updown_memo set up=1
+		where memo_num=#{memo_num} and id=#{id}
+	</update>
+
+	<update id="plusDown" parameterType="map">
+		update updown_memo set
+		down=1 where memo_num=#{memo_num} and id=#{id}
+	</update>
+</mapper>

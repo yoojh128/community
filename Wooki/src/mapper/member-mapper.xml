@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.MemberMapper">
+	<select id="loginCheck" parameterType="map" resultType="Integer">
+		select count(*) from membership where id=#{id} and pw=#{pw}
+	</select>
+	
+	<select id="confirmId" parameterType="String" resultType="Integer">
+		select count(*) from membership where id=#{id}
+	</select>
+	
+	<insert id="insertMembership" parameterType="PappusMembership">
+		insert into membership(id,pw,name,gender,year,month,day,email,phone_num) values(#{id},#{pw},#{name},#{gender},#{year},#{month},#{day},#{email},#{phoneNum})
+	</insert>
+	
+	<update id="update" parameterType="PappusMembership">	
+		update membership set pw=#{pw},name=#{name},gender=#{gender},year=#{year},month=#{month},day=#{day},email=#{email},phone_num=#{phoneNum} where id=#{id}
+	</update>
+	
+	<delete id="delete" parameterType="map">
+		delete from membership where id=#{id} and pw=#{pw}
+	</delete>
+	
+	<select id="userInfo" parameterType="map" resultMap="memberMap" >
+		select id,name,gender,year,month,day,email,phone_num from membership where id=#{id} and pw=#{pw}
+	</select>
+	
+	<resultMap type="PappusMembership" id="memberMap">
+		<result column="id" property="id"/>
+		<result column="pw" property="pw"/>
+		<result column="name" property="name"/>
+		<result column="gender" property="gender"/>
+		<result column="year" property="year"/>
+		<result column="month" property="month"/>
+		<result column="day" property="day"/>
+		<result column="email" property="email"/>
+		<result column="phone_num" property="phoneNum"/>
+	</resultMap>
+</mapper>

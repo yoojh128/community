@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+</head>
+<body>
+	<div class="row">
+		<c:choose>
+			<c:when test="${empty requestScope.memoPage.memoList }">
+
+				<h3 align="center">게시글이 존재하지 않습니다.</h3>
+
+			</c:when>
+			<c:otherwise>
+				<c:forEach var="memo" items="${requestScope.memoPage.memoList }">
+					<div class="portfolio-item col-md-3 col-sm-6">
+						<div class="portfolio-thumb"
+							style="background-image: URL(http://localhost:8088/Pappus/test/240_post1.png); height: 240px; width: 240px;">
+
+
+							<article style="position: absolute; top: 50px; left: 30px;">
+								<a id="page" href="read.do?memo_num=${memo.memo_num }">${memo.content
+									}</a>
+							</article>
+							<div class="portfolio-overlay">
+
+								<a href="test/post1.png" data-rel="lightbox" class="expand">
+									<i class="fa fa-search"></i>
+								</a>
+							</div>
+							<!-- /.portfolio-overlay -->
+						</div>
+						<p>${memo.id}</p>
+						<p>${memo.posting_date}</p>
+						<!-- /.portfolio-thumb -->
+					</div>
+				</c:forEach>
+	</div>
+</body>
+</html>
